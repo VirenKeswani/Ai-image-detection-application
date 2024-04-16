@@ -24,12 +24,20 @@
             border-color: #007bff;
         }
 
-        #preview {
+        #preview2 {
             max-width: 300px;
             margin: 20px auto;
         }
 
-        #preview img {
+        #preview2 img {
+            max-width: 100%;
+        }
+        #preview1 {
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        #preview1 img {
             max-width: 100%;
         }
         #colx {
@@ -67,20 +75,15 @@
                 <br>
                 <h2>Semantic Model</h2>
 
-                <form id="uploadForm" action="/semantic" method="post" enctype="multipart/form-data">
-                    <div class="drop-container" id="dropContainer">
+                <form id="uploadForm1" action="/semantic" method="post" enctype="multipart/form-data">
+                    <div class="drop-container" id="dropContainer1">
                         <p>Drag & Drop files here</p>
-                        <input type="file" id="fileInput" name="fileInput" accept="image/*" style="display: none;">
-                        <button type="button" onclick="document.getElementById('fileInput').click()">Or Browse
-                            Files</button>
+                        <input type="file" id="fileInput1" name="fileInput" accept="image/*" style="display: none;">
+                        <button type="button" onclick="document.getElementById('fileInput1').click()">Or Browse Files</button>
                     </div>
-                    <!-- <input type="submit" value="Upload"> -->
-                    <div id="preview"></div>
-                    <div class="text-center">
-                        <input class="btn btn-primary" type="submit" value="Submit">
-                    </div>
-
+                    <input type="submit" value="Upload">
                 </form>
+                <div id="preview1"></div>
                 {% if result_semantic %}
                 <div>
                     <div class="card" id="cardx">
@@ -96,20 +99,15 @@
                 <br>
                 <h2>Non-Semantic Model</h2>
 
-                <form id="uploadForm" action="/nsemantic" method="post" enctype="multipart/form-data">
-                    <div class="drop-container" id="dropContainer">
+                <form id="uploadForm2" action="/nsemantic" method="post" enctype="multipart/form-data">
+                    <div class="drop-container" id="dropContainer2">
                         <p>Drag & Drop files here</p>
-                        <input type="file" id="fileInput" name="fileInput" accept="image/*" style="display: none;">
-                        <button type="button" onclick="document.getElementById('fileInput').click()">Or Browse
-                            Files</button>
+                        <input type="file" id="fileInput2" name="fileInput" accept="image/*" style="display: none;">
+                        <button type="button" onclick="document.getElementById('fileInput2').click()">Or Browse Files</button>
                     </div>
-                    <!-- <input type="submit" value="Upload"> -->
-                    <div id="preview"></div>
-                    <div class="text-center">
-                        <input class="btn btn-primary" type="submit" value="Submit">
-                    </div>
-
+                    <input type="submit" value="Upload">
                 </form>
+                <div id="preview2"></div>
                 {% if result_nsemantic %}
                 <div class="card" id="cardx">
                     <div class="card-body">
@@ -165,46 +163,71 @@
     </div> -->
 
     <script>
-        const dropContainer = document.getElementById('dropContainer');
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
+        const dropContainer1 = document.getElementById('dropContainer1');
+const fileInput1 = document.getElementById('fileInput1');
+const preview1 = document.getElementById('preview1');
 
-        dropContainer.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropContainer.classList.add('drag-over');
-        });
+dropContainer1.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropContainer1.classList.add('drag-over');
+});
 
-        dropContainer.addEventListener('dragleave', () => {
-            dropContainer.classList.remove('drag-over');
-        });
+dropContainer1.addEventListener('dragleave', () => {
+    dropContainer1.classList.remove('drag-over');
+});
 
-        dropContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropContainer.classList.remove('drag-over');
+dropContainer1.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropContainer1.classList.remove('drag-over');
+    
+    const file = e.dataTransfer.files[0];
+    previewFile(file, preview1);
+});
 
-            const file = e.dataTransfer.files[0];
-            previewFile(file);
-        });
+fileInput1.addEventListener('change', () => {
+    const file = fileInput1.files[0];
+    previewFile(file, preview1);
+});
 
-        fileInput.addEventListener('change', () => {
-            const file = fileInput.files[0];
-            previewFile(file);
-        });
+// Form 2
+const dropContainer2 = document.getElementById('dropContainer2');
+const fileInput2 = document.getElementById('fileInput2');
+const preview2 = document.getElementById('preview2');
 
-        function previewFile(file) {
-            const reader = new FileReader();
+dropContainer2.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropContainer2.classList.add('drag-over');
+});
 
-            reader.onload = function (e) {
-                const img = new Image();
-                img.src = e.target.result;
-                preview.innerHTML = '';
-                preview.appendChild(img);
-            };
+dropContainer2.addEventListener('dragleave', () => {
+    dropContainer2.classList.remove('drag-over');
+});
 
-            reader.readAsDataURL(file);
-        }
+dropContainer2.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropContainer2.classList.remove('drag-over');
+    
+    const file = e.dataTransfer.files[0];
+    previewFile(file, preview2);
+});
 
-        // You may want to add additional handling for form submission
+fileInput2.addEventListener('change', () => {
+    const file = fileInput2.files[0];
+    previewFile(file, preview2);
+});
+
+function previewFile(file, preview) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        preview.innerHTML = '';
+        preview.appendChild(img);
+    };
+
+    reader.readAsDataURL(file);
+}
     </script>
 
 </body>
